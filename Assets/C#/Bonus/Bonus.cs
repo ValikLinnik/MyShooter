@@ -1,6 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
 using System.Collections;
-using System;
+using UnityEngine;
 using Random = UnityEngine.Random;
 
 public enum BonusType
@@ -81,13 +81,12 @@ public class Bonus : MonoBehaviour
 
     public void SetRandomValue()
     {
-        _type = (BonusType)Random.Range(0,2);
+        _type = _type.GetRandomItem<BonusType>();
         if(_type == BonusType.Ammo) 
         {
-            _ammoType = (AmmoType)Random.Range(0, 3);
+            _ammoType = _ammoType.GetRandomItem<AmmoType>();
             _value = Random.Range(10,20);
         }
-
         Debug.LogFormat("<size=20><color=red><b><i>{0}</i></b></color></size>", ToString());
     }
 

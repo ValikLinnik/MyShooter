@@ -1,0 +1,6 @@
+[submodule "Assets/C#/CommonManagers"]
+	path = "Assets/C#/CommonManagers"
+	url = https://github.com/ValikLinnik/CommonManagers.git
+[submodule "Assets/C#/Extensions"]
+	path = "Assets/C#/Extensions"
+	url = https://github.com/ValikLinnik/Extensions.git

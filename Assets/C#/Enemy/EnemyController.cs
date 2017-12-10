@@ -65,7 +65,7 @@ public class EnemyController : MonoBehaviour
 
         if(!tempTransform)
         {
-            Debug.LogFormat("<size=20><color=red><b><i>{0}</i></b></color></size>", "transform is null");
+                Debug.LogFormat("<size=20><color=red><b><i>{0}</i></b></color></size>", "transform is null");
             return;
         }
 
@@ -110,13 +110,9 @@ public class EnemyController : MonoBehaviour
 
     private Transform GetPosition()
     {
-        if(_spawnPoints == null || _spawnPoints.Length == 0)
-        {
-            Debug.LogFormat("<size=20><color=red><b><i>{0}</i></b></color></size>", "spawn points array is empty");
-            return null;
-        }
+        if(_spawnPoints.IsNullOrEmpty()) return null;
 
-        foreach (var item in _spawnPoints)
+        foreach(var item in _spawnPoints)
         {
             if(!item) continue;
             if(!item.isVisible && !_usedTransforms.Contains(item.transform)) return item.transform;
