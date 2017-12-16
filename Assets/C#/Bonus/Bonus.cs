@@ -85,13 +85,21 @@ public class Bonus : MonoBehaviour
         if(_type == BonusType.Ammo) 
         {
             _ammoType = _ammoType.GetRandomItem<AmmoType>();
-            _value = Random.Range(10,20);
+            _value = Random.Range(10,31);
+        }
+        else if(_type == BonusType.Cargo)
+        {
+            _value = 1;
+        }
+        else
+        {
+            _value = 10;
         }
         Debug.LogFormat("<size=20><color=red><b><i>{0}</i></b></color></size>", ToString());
     }
 
     public override string ToString()
     {
-        return string.Format("[Bonus: Type={0}, AmmoType={1}]", Type, AmmoType);
+        return string.Format("[Bonus: Type={0}, AmmoType={1}, Value={2}]", Type, AmmoType, Value);
     }
 }

@@ -4,45 +4,44 @@ using System.Collections.Generic;
 
 public class EnemyController : MonoBehaviour 
 {
-	[SerializeField]
+	#region SERIALIZE FIELDS
+
+    [SerializeField]
     private Enemy[] _enemyPrefabs;
 
     [SerializeField]
     private Renderer[] _spawnPoints;
 
-    [SerializeField, Range(1,10)]
+    [SerializeField, Range(1, 10)]
     private int _quantityOfEnemys = 3;
 
     [SerializeField]
     private Transform _playerTransform;
 
-    //private List<Enemy> _enemys = new List<Enemy>();
+    [SerializeField, Range(0,200)]
+    private float _minDistance = 100;
+
+    #endregion
+
+    #region PRIVATE FIELDS
+
     private List<Transform> _usedTransforms = new List<Transform>();
     private int _quantity;
+    private int _totalShotEnemies;
+
+    #endregion
+
+    #region UNITY EVENTS
 
     private void LateUpdate()
     {
         EnemyHandler();
     }
 
+    #endregion
+
     private void EnemyHandler()
     {
-//        if(_enemys == null)
-//        {
-//            _enemys = new List<Enemy>();
-//        }
-
-//        if(_enemys == null) 
-//        {
-//            return;
-//        }
-
-//        foreach (var item in _enemys)
-//        {
-//            if(!item) continue;
-//
-//            if(item.gameObject.activeSelf) quantity++;
-//        }
 
         if(_quantity >= _quantityOfEnemys)
         {
@@ -59,13 +58,12 @@ public class EnemyController : MonoBehaviour
 
     private void AddEnemy()
     {
-        if(_enemyPrefabs == null || _enemyPrefabs.Length == 0) return;
+        if(_enemyPrefabs.IsNullOrEmpty()) return;
 
         var tempTransform = GetPosition();
 
         if(!tempTransform)
         {
-                Debug.LogFormat("<size=20><color=red><b><i>{0}</i></b></color></size>", "transform is null");
             return;
         }
 
@@ -105,7 +103,9 @@ public class EnemyController : MonoBehaviour
         if(!enemy) return;
         enemy.EnemyDie -= EnemyDie;
         _quantity--;
-        _quantityOfEnemys++;
+        _totalShotEnemies++;
+        _quantityOfEnemys = _totalShotEnemies;
+        if(UIController.Instance) UIController.Instance.TotalShotEnemies = _totalShotEnemies;
     }
 
     private Transform GetPosition()
@@ -115,7 +115,7 @@ public class EnemyController : MonoBehaviour
         foreach(var item in _spawnPoints)
         {
             if(!item) continue;
-            if(!item.isVisible && !_usedTransforms.Contains(item.transform)) return item.transform;
+            if(!item.isVisible && !_usedTransforms.Contains(item.transform) && (Vector3.Distance(_playerTransform.position, item.transform.position) > _minDistance)) return item.transform;
         }
 
         return null;

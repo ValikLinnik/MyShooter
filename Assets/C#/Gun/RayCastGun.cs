@@ -4,49 +4,50 @@ using MyNamespace;
 
 public class RayCastGun : BaseGun 
 {
+    #region SERIALIZE FIELDS
+
     [SerializeField]
     private GameObject _shootEffect;
 
-    private void OnEnable()
-    {
-        if(UIController.Instance) UIController.Instance.SetActiveAIM(true);
-    }
+    #endregion
 
-    protected virtual void LateUpdate()
+    #region UNITY EVENTS
+
+    protected override void LateUpdate()
     {
-        if(Input.GetKeyDown(KeyCode.Mouse0))
+        if (Input.GetKeyDown(KeyCode.LeftCommand)|| Input.GetKeyDown(KeyCode.Mouse0))
         {
             Fire();
         }
 
         base.LateUpdate();
-
     }
+
+    #endregion
+
+    #region PRIVATE METHODS
 
     protected override void Fire()
     {
-        if(_currentBulletQuantity <= 0) return;
+        if (_currentBulletQuantity <= 0) return;
 
-        Ray ray = _camera.ViewportPointToRay(new Vector2( .5f, .5f));
+        Ray ray = Camera.ViewportPointToRay(new Vector2(.5f, .5f));
 
         RaycastHit hit;
 
-        if(Physics.Raycast(ray, out hit, _camera.farClipPlane))
+        if (Physics.Raycast(ray, out hit, Camera.farClipPlane))
         {
             var tempEnemy = hit.collider.GetComponent<Enemy>();
-            if(!tempEnemy) return;
+            if (!tempEnemy) return;
 
-            if(_shootEffect) _shootEffect.SetActive(true);
+            if (_shootEffect) _shootEffect.SetActive(true);
             var tempHealth = hit.collider.GetComponent<HealthComponent>();
-            if(tempHealth) tempHealth.TakeDamege(_damage);
+            if (tempHealth) tempHealth.TakeDamege(_damage);
 
             DecrementBulletsAndShowQuantity();
-
-//            Rigidbody temp = hit.collider.gameObject.GetComponent<Rigidbody>();
-//            if(!temp) return;
-//            temp.AddForceAtPosition(_camera.transform.forward * _force, hit.point,ForceMode.Impulse);
-
         }
     }
+
+    #endregion
 
 }

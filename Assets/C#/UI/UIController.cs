@@ -50,6 +50,9 @@ public class UIController : MonoBehaviour
     [SerializeField]
     private Text _hpText;
 
+    [SerializeField]
+    private Text _totalShotEnemies;
+
     #endregion
 
     private Queue<string> _messages = new Queue<string>();
@@ -96,9 +99,9 @@ public class UIController : MonoBehaviour
         if(_cargoQuantity) _cargoQuantity.text = quantity.ToString();
     }
 
-    public void SetWeaponName(string name)
+    public void SetWeaponName(AmmoType name)
     {
-        if(_weaponName) _weaponName.text = name;
+        if(_weaponName) _weaponName.text = name.ToString();
     }
 
     public void SetBulletsQuantity(int bullets, int cages)
@@ -203,6 +206,18 @@ public class UIController : MonoBehaviour
 
         _lifeSlider.maxValue = value > _lifeSlider.maxValue ? value : _lifeSlider.maxValue;
         _lifeSlider.value = value;
+    }
+
+    public int TotalShotEnemies
+    {
+        private get
+        {
+            return 0;
+        }
+        set
+        {
+            if(_totalShotEnemies) _totalShotEnemies.text = value.ToString("D");
+        }
     }
 
     #endregion

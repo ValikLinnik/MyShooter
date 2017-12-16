@@ -41,6 +41,9 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     private UnityEngine.AI.NavMeshAgent _navMesh;
 
+    [SerializeField]
+    private Collider _collider;
+
     [SerializeField, Range(.1f, 5f)]
     private float _attackDistance = 2;
 
@@ -53,8 +56,14 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     private EnemyAnimatonComponent _animationComponent;
 
-    [SerializeField, Range(1,5)]
-    float _follingSpeed = 1;
+    [SerializeField]
+    private GameObject _mapMarker;
+
+    [SerializeField]
+    private float _moveDownSpeed = .1f;
+
+    [SerializeField,Range(0,10)]
+    private float _dieDelay = 5f;
 
     #endregion
 
@@ -92,6 +101,9 @@ public class Enemy : MonoBehaviour
 
     public void Initialize(Transform myPoint, Transform playerTransform)
     {
+//        if(_navMesh) _navMesh.enabled = true;
+//        if(_collider) _collider.enabled = true;
+        StopAllCoroutines();
         gameObject.SetActive(true);
         Player = playerTransform;
         _enemyStates = EnemyStates.Normal;
@@ -112,6 +124,8 @@ public class Enemy : MonoBehaviour
         }
 
         if(_healthComponent) _healthComponent.CurrentHealthValue = _health;
+
+        if(_mapMarker) _mapMarker.SetActive(true);
     }
 
     private void Update()
@@ -151,7 +165,7 @@ public class Enemy : MonoBehaviour
             if(_animationComponent) _animationComponent.DieAnimation();
             _lifeSlider.gameObject.SetActive(false);
             _navMesh.destination = transform.position;
-            Invoke("Die",2f);
+            Die();
             return;
         }
 
@@ -177,7 +191,28 @@ public class Enemy : MonoBehaviour
 
     private void Die()
     {
-        this.PutInPool(); 
-        EnemyDieHandler();
+        if(_mapMarker) _mapMarker.SetActive(false);
+
+//        if(_collider) _collider.enabled = false;
+//        if(_navMesh) _navMesh.enabled = false;
+
+//        StartCoroutine(DieAnimation());
+
+        this.WaitAndDo(_dieDelay, ()=>
+        {
+            StopAllCoroutines();
+            EnemyDieHandler(); 
+            this.PutInPool(); 
+        });
+    }
+
+    private IEnumerator DieAnimation()
+    {
+        yield return new WaitForFixedUpdate();
+
+        var temp = transform.position;
+        temp.y -= _moveDownSpeed;
+        transform.position = temp;
+        StartCoroutine(DieAnimation());
     }
 }

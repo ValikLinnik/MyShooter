@@ -7,7 +7,7 @@ namespace MyNamespace
 {
     public class HealthComponent : MonoBehaviour
     {
-        [SerializeField, Range(0, 100)]
+        [SerializeField, Range(0, 300)]
         private float _currentHealth;
     
         public float CurrentHealthValue

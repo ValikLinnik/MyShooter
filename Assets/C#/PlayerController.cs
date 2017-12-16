@@ -7,6 +7,9 @@ using System.Collections.Generic;
 public class PlayerController : MonoBehaviour 
 {
     [SerializeField]
+    protected Camera _camera;
+
+    [SerializeField]
     private BaseGun[] _guns;
 
     [SerializeField]
@@ -26,6 +29,16 @@ public class PlayerController : MonoBehaviour
     {
         if(_healthComponent) _healthComponent.OnDamageGet += OnDamageGet;  
         if(UIController.Instance) UIController.Instance.AddMessage(string.Format("Player:{0} join the game", gameObject.name));
+
+        if(!_guns.IsNullOrEmpty())
+        {
+            foreach (var gun in _guns)
+            {
+                if(!gun) continue;
+                gun.Camera = _camera;
+            }
+        }
+
         SetActiveGun(0,true);
     }
 
