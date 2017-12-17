@@ -59,6 +59,7 @@ public static class Extentions
 {
     public static T GetRandomItem<T>(this T[] array)
     {
+        if(array.IsNullOrEmpty()) return default(T);
         return array[Random.Range(0, array.Length)];
     }
 }

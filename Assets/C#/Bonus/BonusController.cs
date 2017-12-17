@@ -57,11 +57,12 @@ public class BonusController : MonoBehaviour
 
         if(tempBonus == null) 
         {
-            Debug.LogFormat("<size=20><color=red><b><i>{0}</i></b></color></size>", "prefab is null");
             yield break;
         }
 
         tempBonus = tempBonus.GetInstance<Bonus>();
+
+        if(!tempBonus) yield break;
 
         var pos = tempBonus.transform.position;
         pos.x = tempTransform.position.x;
@@ -73,7 +74,8 @@ public class BonusController : MonoBehaviour
         {
             AmmoType temp = AmmoType.BombGun;
             tempBonus.AmmoType = temp.GetRandomItem<AmmoType>();
-            tempBonus.Value = Random.Range(10,31);
+            if(tempBonus.AmmoType == AmmoType.BombGun) tempBonus.Value = 5;
+            else tempBonus.Value = 10;
         }
         else if(tempBonus.Type == BonusType.Cargo)
         {
