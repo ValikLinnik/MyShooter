@@ -7,7 +7,7 @@ public class BombGun : BaseGun
     #region SERIALIZE FIELDS
 
     [SerializeField]
-    private Bomb _bullet;
+    private string _prefabPath;
 
     [SerializeField]
     private Transform _spawnPoint;
@@ -18,6 +18,8 @@ public class BombGun : BaseGun
     #endregion
 
     #region PRIVATE FIELDS
+
+    private Bomb _bullet;
 
     private float _bombForce;
 
@@ -89,6 +91,18 @@ public class BombGun : BaseGun
         if (_currentBulletQuantity <= 0)
         {
             Debug.LogFormat("<size=18><color=olive>{0}</color></size>", "you have no bullets! recharge or change gun.");
+            return;
+        }
+
+        if(!_bullet)
+        {
+            Debug.LogFormat("<size=18><color=olive>{0}</color></size>", "TRY TO DOWNLOAD PREFAB");
+            _bullet = Resources.Load<Bomb>(_prefabPath);
+        }
+
+        if(!_bullet)
+        {
+            Debug.LogFormat("<size=18><color=olive>{0}</color></size>", "BULLET IS NULL!");
             return;
         }
 

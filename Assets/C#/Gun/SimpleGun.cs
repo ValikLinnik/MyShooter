@@ -6,7 +6,7 @@ public class SimpleGun : BaseGun
     #region SERIALIZE FIELDS
 
     [SerializeField]
-    private Bullet _bullet;
+    private string _prefabPath;
 
     [SerializeField]
     private Transform _spawnPoint;
@@ -14,6 +14,8 @@ public class SimpleGun : BaseGun
     #endregion
 
     #region UNITY EVENTS
+
+    private Bullet _bullet;
 
     protected override void OnEnable()
     {
@@ -35,6 +37,18 @@ public class SimpleGun : BaseGun
     protected override void Fire()
     {
         if(_currentBulletQuantity <= 0) return;
+
+        if(!_bullet)
+        {
+            Debug.LogFormat("<size=18><color=olive>{0}</color></size>", "TRY TO DOWNLOAD PREFAB");
+            _bullet = Resources.Load<Bullet>(_prefabPath);
+        }
+
+        if(!_bullet)
+        {
+            Debug.LogFormat("<size=18><color=olive>{0}</color></size>", "BULLET IS NULL!");
+            return;
+        }
 
         var tempObj = _bullet.GetInstance<Bullet>();
 
