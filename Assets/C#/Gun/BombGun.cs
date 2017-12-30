@@ -96,7 +96,6 @@ public class BombGun : BaseGun
 
         if(!_bullet)
         {
-            Debug.LogFormat("<size=18><color=olive>{0}</color></size>", "TRY TO DOWNLOAD PREFAB");
             _bullet = Resources.Load<Bomb>(_prefabPath);
         }
 
