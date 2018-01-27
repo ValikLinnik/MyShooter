@@ -38,14 +38,12 @@ public class Bomb : MonoBehaviour
 
     private void AddView()
     {
-        Debug.LogFormat("<size=18><color=olive>{0}</color></size>", "add view");
         if(_prefabsNames.IsNullOrEmpty() || !_viewWrapper) return;
 
         if(_view)
         {
             _view.PutInPool();
             _view = null;
-            Debug.LogFormat("<size=18><color=olive>{0}</color></size>", "disabled old view");
         }
 
         var name = _prefabsNames.GetRandomItem();

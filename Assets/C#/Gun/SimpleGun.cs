@@ -34,33 +34,37 @@ public class SimpleGun : BaseGun
 
     #endregion
 
+    #region PRIVATE METHODS
+
     protected override void Fire()
     {
-        if(_currentBulletQuantity <= 0) return;
+        if (_currentBulletQuantity <= 0)
+            return;
 
-        if(!_bullet)
+        if (!_bullet)
         {
-            Debug.LogFormat("<size=18><color=olive>{0}</color></size>", "TRY TO DOWNLOAD PREFAB");
             _bullet = Resources.Load<Bullet>(_prefabPath);
         }
 
-        if(!_bullet)
+        if (!_bullet)
         {
-            Debug.LogFormat("<size=18><color=olive>{0}</color></size>", "BULLET IS NULL!");
             return;
         }
 
         var tempObj = _bullet.GetInstance<Bullet>();
 
-        if(!tempObj) return;
+        if (!tempObj)
+            return;
 
         tempObj.gameObject.SetActive(true);
         tempObj.transform.position = _spawnPoint.position;
 
-        if(tempObj) 
+        if (tempObj)
         {
-            tempObj.Initialize(/*Camera.transform*/_spawnPoint.forward * _force, _damage);
+            tempObj.Initialize(_spawnPoint.forward * _force, _damage);
             DecrementBulletsAndShowQuantity();
         }
     }
+
+    #endregion
 }
