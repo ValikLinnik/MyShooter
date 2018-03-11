@@ -5,6 +5,7 @@ Shader "XRay Shaders/Diffuse-XRay-Replaceable"
 		_Color("Main Color", Color) = (1,1,1,1)
 		_EdgeColor("XRay Edge Color", Color) = (0,0,0,0)
 		_MainTex("Base (RGB)", 2D) = "white" {}
+		_Sky("Sky",Cube) = ""{}
 	}
 
 	SubShader
@@ -32,10 +33,13 @@ Shader "XRay Shaders/Diffuse-XRay-Replaceable"
 		#pragma surface surf Lambert
 
 		sampler2D _MainTex;
+		samplerCUBE _Sky;
 		fixed4 _Color;
 
-		struct Input {
+		struct Input 
+		{
 			float2 uv_MainTex;
+			float3 worldRefl;
 		};
 
 		void surf(Input IN, inout SurfaceOutput o)
@@ -43,6 +47,7 @@ Shader "XRay Shaders/Diffuse-XRay-Replaceable"
 			fixed4 c = tex2D(_MainTex, IN.uv_MainTex) * _Color;
 			o.Albedo = c.rgb;
 			o.Alpha = c.a;
+			o.Emission = texCUBE(_Sky, IN.worldRefl);
 		}
 		ENDCG
 	}

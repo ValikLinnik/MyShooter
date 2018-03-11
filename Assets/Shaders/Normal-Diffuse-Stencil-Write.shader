@@ -23,10 +23,12 @@ Shader "XRay Shaders/Diffuse-Stencil-Write"
 		#pragma surface surf Lambert
 
 		sampler2D _MainTex;
+		samplerCUBE _Sky;
 		fixed4 _Color;
 
 		struct Input {
 			float2 uv_MainTex;
+			float3 worldNormal;
 		};
 
 		void surf(Input IN, inout SurfaceOutput o)
